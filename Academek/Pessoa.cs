@@ -8,6 +8,6 @@ namespace Academek
     {
         public string Nome { get; set; }
         public string CPF { get; set; }
-        public string DataNascimento { get; set; }
+        public string DataDeNascimento { get; set; }
     }
 }
