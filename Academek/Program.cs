@@ -26,8 +26,8 @@ class Program
 
             Console.WriteLine("1. Cadastrar Aluno");
             Console.WriteLine("2. Cadastrar Professor");
-            Console.WriteLine("3. Listar dos Professores"); //talvez colocar duas listas, uma para aluno com disciplinas e medias e outra para o professor com as turmas e disciplinas
-            Console.WriteLine("4. Exibir Alguma coisa");
+            Console.WriteLine("3. Listar dos Alunos"); //talvez colocar duas listas, uma para aluno com disciplinas e medias e outra para o professor com as turmas e disciplinas
+            Console.WriteLine("4. Lista dos Professores");
             Console.WriteLine("5. Sair");
             Console.WriteLine("=======================================");
             Console.Write("Escolha uma opção (1 a 5): ");
@@ -41,6 +41,7 @@ class Program
                 case "1":
                     Console.WriteLine("\n[Opção selecionada: Cadastrar Aluno]");
                     CadastroAluno();
+                    Pausar();
                     break;
 
                 case "2":
@@ -49,12 +50,14 @@ class Program
                     break;
 
                 case "3":
-                    Console.WriteLine("\n[Opção selecionada: Listar Todos os Professores]");
+                    Console.WriteLine("\n[Opção selecionada: Listar Todos os Alunos]");
+                    ListaAlunos();
                     Pausar();
                     break;
 
                 case "4":
-                    Console.WriteLine("\n[Opção selecionada: Exibir Estatísticas]");
+                    Console.WriteLine("\n[Opção selecionada: Lista de Todos os Professores]");
+                    ListaDeProfessor();
                     Pausar();
                     break;
 
@@ -114,6 +117,43 @@ class Program
         Console.WriteLine("Digite o numero para sua matricula");
         novoAluno.Matricula = Double.Parse(Console.ReadLine()!);
 
-
+        ListaDeAlunos.Add(novoAluno);
     }
+
+    static void ListaAlunos()
+    {
+        Console.Clear();
+
+        Console.WriteLine(@"========== 𝐿𝑖𝑠𝑡𝑎 𝑑𝑒 𝐴𝑙𝑢𝑛𝑜𝑠 ==========");
+
+        if (ListaDeAlunos.Count == 0)
+        {
+            Console.WriteLine("Nenhum Aluno Cadastrado");
+        }else
+        {
+            foreach (var Aluno in ListaDeAlunos)
+            {
+                Console.WriteLine($"Nome: {Aluno.Nome}, CPF: {Aluno.CPF}, Data De Nascimento: {Aluno.DataDeNascimento}, Notas: {Aluno.Medias}, Matricula: {Aluno.Matricula}");
+                
+            }
+        }
+    }
+
+    static void ListaDeProfessor()
+    {
+        Console.Clear();
+
+        if (ListaProfessor.Count == 0)
+        {
+            Console.WriteLine("Nenhum Professor Cadastrado");
+        }
+        else
+        {
+            foreach (var Professor in ListaProfessor)
+            {
+                Console.WriteLine($"Nome: {Professor.Nome}, CPF: {Professor.CPF}, Data de Nascimento: {Professor.DataDeNascimento}, Salario: {Professor.Salario}, Turmas: {Professor.Turmas} ");
+            }
+        }
+    }
+
 }
