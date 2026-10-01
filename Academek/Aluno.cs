@@ -9,7 +9,7 @@ namespace Academek
         public double Matricula { get; set; }
 
         private List<double> _notas = new List<double>();
-        public IReadOnlyList<double> Notas => _notas;
+        public IReadOnlyList<double> Notas => _notas; //Lembrar de adicionar disciplinas e não deixar sair apos a primeira nota
 
         public Aluno(string nome, string cpf, string dataDeNascimento, double matricula)
             : base(nome, cpf, dataDeNascimento)

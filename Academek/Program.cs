@@ -81,79 +81,222 @@ class Program
         Console.ReadLine();
     }
 
+    //static void CadastroAluno()
+    //{
+    //    try
+    //    {
+    //        Console.Clear();
+    //        Console.WriteLine("--- CADASTRO DE ALUNO ---");
+
+    //        Console.Write("Digite o nome completo: ");
+    //        string nome = Console.ReadLine()!;
+
+    //        Console.Write("Digite o CPF: ");
+    //        string cpf = Console.ReadLine()!;
+
+    //        Console.Write("Digite a data de nascimento: ");
+    //        string dataNasc = Console.ReadLine()!;
+
+    //        Console.Write("Digite o número da matrícula: ");
+    //        if (!double.TryParse(Console.ReadLine(), out double matricula))
+    //        {
+    //            throw new FormatException("A matrícula deve ser um número válido!");
+    //        }
+
+    //        Aluno novoAluno = new Aluno(nome, cpf, dataNasc, matricula);
+
+    //        Console.Write("Digite uma nota inicial (0 a 10): ");
+    //        if (double.TryParse(Console.ReadLine(), out double nota))
+    //        {
+    //            novoAluno.AdicionarNota(nota);
+    //        }
+
+    //        ListaDeAlunos.Add(novoAluno);
+    //        Console.WriteLine("\nAluno cadastrado com sucesso!");
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Console.WriteLine($"\n[ERRO NO CADASTRO]: {ex.Message}");
+    //    }
+    //}
+
     static void CadastroAluno()
     {
-        try
+       
+        while (true)
         {
-            Console.Clear();
-            Console.WriteLine("--- CADASTRO DE ALUNO ---");
-
-            Console.Write("Digite o nome completo: ");
-            string nome = Console.ReadLine()!;
-
-            Console.Write("Digite o CPF: ");
-            string cpf = Console.ReadLine()!;
-
-            Console.Write("Digite a data de nascimento: ");
-            string dataNasc = Console.ReadLine()!;
-
-            Console.Write("Digite o número da matrícula: ");
-            if (!double.TryParse(Console.ReadLine(), out double matricula))
+            try
             {
-                throw new FormatException("A matrícula deve ser um número válido!");
-            }
+                Console.Clear();
+                Console.WriteLine("--- CADASTRO DE ALUNO ---\n"); //A validação não esta pura, deixei meu cadastro do aluno e professor comentado
 
-            Aluno novoAluno = new Aluno(nome, cpf, dataNasc, matricula);
+                
+                Console.Write("Digite o nome completo: ");
+                string nome = Console.ReadLine()?.Trim()!;
 
-            Console.Write("Digite uma nota inicial (0 a 10): ");
-            if (double.TryParse(Console.ReadLine(), out double nota))
-            {
+                
+                if (string.IsNullOrWhiteSpace(nome) || !nome.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+                {
+                    throw new FormatException("O Nome deve conter apenas letras e espaços.");
+                }
+
+               
+                Console.Write("Digite o CPF (apenas 11 números): ");
+                string cpf = Console.ReadLine()?.Trim()!;
+                if (string.IsNullOrWhiteSpace(cpf) || !cpf.All(char.IsDigit) || cpf.Length != 11)
+                {
+                    throw new FormatException("O CPF deve conter exatamente 11 números (sem pontos ou traços).");
+                }
+
+
+                Console.Write("Digite a data de nascimento (DD/MM/AAAA): ");
+                string dataNasc = Console.ReadLine()?.Trim()!; 
+                int idadeMaxima = 90;
+                DateTime dataMinima = DateTime.Now.AddYears(-idadeMaxima);
+                if (!DateTime.TryParseExact(dataNasc, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime dataValida)
+                    || dataValida > DateTime.Now
+                    || dataValida < dataMinima)
+                {
+                    throw new FormatException($"Data de nascimento inválida! Informe uma data válida dos últimos {idadeMaxima} anos.");
+                }
+
+
+                Console.Write("Digite o número da matrícula: ");
+                if (!long.TryParse(Console.ReadLine(), out long matricula) || matricula <= 0)
+                {
+                    throw new FormatException("A matrícula deve ser um número inteiro e maior que zero.");
+                }
+
+                Aluno novoAluno = new Aluno(nome, cpf, dataNasc, matricula);
+
+                
+                Console.Write("Digite uma nota inicial (0 a 10): ");
+                if (!double.TryParse(Console.ReadLine(), out double nota))
+                {
+                    throw new FormatException("A nota informada é inválida!");
+                }
+
+                
                 novoAluno.AdicionarNota(nota);
+                ListaDeAlunos.Add(novoAluno);
+                Console.WriteLine("\n[SUCESSO] Aluno cadastrado com sucesso!");
+                break;
             }
-
-            ListaDeAlunos.Add(novoAluno);
-            Console.WriteLine("\nAluno cadastrado com sucesso!");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"\n[ERRO NO CADASTRO]: {ex.Message}");
+            catch (Exception ex)
+            {
+                
+                Console.WriteLine($"\n[ERRO NO CADASTRO]: {ex.Message}");
+                Pausar();
+            }
         }
     }
 
-    static void CadastroProfessor()
+    //static void CadastroProfessor()
+    //{
+    //    try
+    //    {
+    //        Console.Clear();
+    //        Console.WriteLine("--- CADASTRO DE PROFESSOR ---");
+
+    //        Console.Write("Digite o nome completo: ");
+    //        string nome = Console.ReadLine()!;
+
+    //        Console.Write("Digite o CPF: ");
+    //        string cpf = Console.ReadLine()!;
+
+    //        Console.Write("Digite a data de nascimento: ");
+    //        string dataNasc = Console.ReadLine()!;
+
+    //        Console.Write("Digite o salário: R$ ");
+    //        if (!double.TryParse(Console.ReadLine(), out double salario))
+    //        {
+    //            throw new FormatException("O salário informado é inválido!");
+    //        }
+
+    //        Professor novoProf = new Professor(nome, cpf, dataNasc, salario);
+
+    //        Console.Write("Digite a turma do professor: ");
+    //        string turma = Console.ReadLine()!;
+    //        novoProf.AdicionarTurma(turma);
+
+    //        ListaProfessor.Add(novoProf);
+    //        Console.WriteLine("\nProfessor cadastrado com sucesso!");
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Console.WriteLine($"\n[ERRO NO CADASTRO]: {ex.Message}");
+    //    }
+    //}
+
+    static void CadastroProfessor() //o meu esta em cima
     {
-        try
+        while (true)
         {
-            Console.Clear();
-            Console.WriteLine("--- CADASTRO DE PROFESSOR ---");
-
-            Console.Write("Digite o nome completo: ");
-            string nome = Console.ReadLine()!;
-
-            Console.Write("Digite o CPF: ");
-            string cpf = Console.ReadLine()!;
-
-            Console.Write("Digite a data de nascimento: ");
-            string dataNasc = Console.ReadLine()!;
-
-            Console.Write("Digite o salário: R$ ");
-            if (!double.TryParse(Console.ReadLine(), out double salario))
+            try
             {
-                throw new FormatException("O salário informado é inválido!");
+                Console.Clear();
+                Console.WriteLine("--- CADASTRO DE PROFESSOR ---\n");
+
+                
+                Console.Write("Digite o nome completo: ");
+                string nome = Console.ReadLine()?.Trim()!;
+                if (string.IsNullOrWhiteSpace(nome) || !nome.All(c => char.IsLetter(c) || char.IsWhiteSpace(c)))
+                {
+                    throw new FormatException("O Nome deve conter apenas letras e espaços.");
+                }
+
+                
+                Console.Write("Digite o CPF (apenas 11 números): ");
+                string cpf = Console.ReadLine()?.Trim()!;
+                if (string.IsNullOrWhiteSpace(cpf) || !cpf.All(char.IsDigit) || cpf.Length != 11)
+                {
+                    throw new FormatException("O CPF deve conter exatamente 11 números (sem pontos ou traços).");
+                }
+
+               
+                Console.Write("Digite a data de nascimento (DD/MM/AAAA): ");
+                string dataNasc = Console.ReadLine()?.Trim()!;
+                int idadeMaxima = 120;
+                DateTime dataMinima = DateTime.Now.AddYears(-idadeMaxima);
+
+                if (!DateTime.TryParseExact(dataNasc, "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out DateTime dataValida)
+                    || dataValida > DateTime.Now
+                    || dataValida < dataMinima)
+                {
+                    throw new FormatException("Data de nascimento inválida! Use o formato DD/MM/AAAA.");
+                }
+
+                
+                Console.Write("Digite o salário: R$ ");
+                if (!double.TryParse(Console.ReadLine(), out double salario) || salario <= 0)
+                {
+                    throw new FormatException("O salário deve ser um valor numérico positivo!");
+                }
+
+                
+                Professor novoProf = new Professor(nome, cpf, dataNasc, salario);
+
+                
+                Console.Write("Digite a turma do professor: ");
+                string turma = Console.ReadLine()?.Trim()!;
+                if (string.IsNullOrWhiteSpace(turma))
+                {
+                    throw new FormatException("A nome da turma não pode estar em branco.");
+                }
+
+                novoProf.AdicionarTurma(turma); 
+
+               
+                ListaProfessor.Add(novoProf);
+                Console.WriteLine("\n[SUCESSO] Professor cadastrado com sucesso!");
+                Pausar(); 
+                break;
             }
-
-            Professor novoProf = new Professor(nome, cpf, dataNasc, salario);
-
-            Console.Write("Digite a turma do professor: ");
-            string turma = Console.ReadLine()!;
-            novoProf.AdicionarTurma(turma);
-
-            ListaProfessor.Add(novoProf);
-            Console.WriteLine("\nProfessor cadastrado com sucesso!");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"\n[ERRO NO CADASTRO]: {ex.Message}");
+            catch (Exception ex)
+            {
+                Console.WriteLine($"\n[ERRO NO CADASTRO]: {ex.Message}");
+                Pausar();
+            }
         }
     }
 
