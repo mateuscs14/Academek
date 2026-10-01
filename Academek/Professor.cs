@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace Academek
 {
@@ -9,11 +7,31 @@ namespace Academek
     {
         public double Salario { get; set; }
 
-        public List<string> Turmas = new List<string>();
+        private List<string> _turmas = new List<string>();
+        public IReadOnlyList<string> Turmas => _turmas;
 
-        public Professor()
+        public Professor(string nome, string cpf, string dataDeNascimento, double salario)
+            : base(nome, cpf, dataDeNascimento)
         {
-            Turmas.AddRange(new[] { "Matematica 1A", "Portugues 2B" });
+            Salario = salario;
+        }
+
+        public void AdicionarTurma(string turma)
+        {
+            if (!string.IsNullOrWhiteSpace(turma))
+            {
+                _turmas.Add(turma);
+            }
+        }
+
+        public override void ExibirInformacoes()
+        {
+            Console.WriteLine($"Nome: {Nome}");
+            Console.WriteLine($"CPF: {CPF}");
+            Console.WriteLine($"Data de Nascimento: {DataDeNascimento}");
+            Console.WriteLine($"Salário: R$ {Salario:F2}");
+            Console.WriteLine($"Turmas: {(Turmas.Count > 0 ? string.Join(", ", Turmas) : "Nenhuma turma associada")}");
+            Console.WriteLine("-----------------------------------------------");
         }
     }
 }

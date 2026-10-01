@@ -81,79 +81,113 @@ class Program
         Console.ReadLine();
     }
 
-    static void CadastroProfessor()
-    {
-        Professor novoProfessor = new Professor();
-
-        Console.Write("Digite seu nome completo: ");
-        novoProfessor.Nome = Console.ReadLine()!;
-
-        Console.Write("Digite seu CPF: ");
-        novoProfessor.CPF = Console.ReadLine()!;
-
-        Console.Write("Digite sua data de nascimento: ");
-        novoProfessor.DataDeNascimento = Console.ReadLine()!;
-
-        //novoProfessor.Turmas.Add("Matematica 1A",);
-
-        ListaProfessor.Add(novoProfessor);
-
-        Console.Write("/nProfessor cadastrado com sucesso!");
-    }
-
     static void CadastroAluno()
     {
-        Aluno novoAluno = new Aluno();
+        try
+        {
+            Console.Clear();
+            Console.WriteLine("--- CADASTRO DE ALUNO ---");
 
-        Console.Write("Digite seu nome completo: ");
-        novoAluno.Nome = Console.ReadLine()!;
+            Console.Write("Digite o nome completo: ");
+            string nome = Console.ReadLine()!;
 
-        Console.Write("Digite seu CPF: ");
-        novoAluno.CPF = Console.ReadLine()!;
+            Console.Write("Digite o CPF: ");
+            string cpf = Console.ReadLine()!;
 
-        Console.Write("Digite sua data de nascimento: ");
-        novoAluno.DataDeNascimento = Console.ReadLine()!;
+            Console.Write("Digite a data de nascimento: ");
+            string dataNasc = Console.ReadLine()!;
 
-        Console.WriteLine("Digite o numero para sua matricula");
-        novoAluno.Matricula = Double.Parse(Console.ReadLine()!);
+            Console.Write("Digite o número da matrícula: ");
+            if (!double.TryParse(Console.ReadLine(), out double matricula))
+            {
+                throw new FormatException("A matrícula deve ser um número válido!");
+            }
 
-        ListaDeAlunos.Add(novoAluno);
+            Aluno novoAluno = new Aluno(nome, cpf, dataNasc, matricula);
+
+            Console.Write("Digite uma nota inicial (0 a 10): ");
+            if (double.TryParse(Console.ReadLine(), out double nota))
+            {
+                novoAluno.AdicionarNota(nota);
+            }
+
+            ListaDeAlunos.Add(novoAluno);
+            Console.WriteLine("\nAluno cadastrado com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"\n[ERRO NO CADASTRO]: {ex.Message}");
+        }
+    }
+
+    static void CadastroProfessor()
+    {
+        try
+        {
+            Console.Clear();
+            Console.WriteLine("--- CADASTRO DE PROFESSOR ---");
+
+            Console.Write("Digite o nome completo: ");
+            string nome = Console.ReadLine()!;
+
+            Console.Write("Digite o CPF: ");
+            string cpf = Console.ReadLine()!;
+
+            Console.Write("Digite a data de nascimento: ");
+            string dataNasc = Console.ReadLine()!;
+
+            Console.Write("Digite o salário: R$ ");
+            if (!double.TryParse(Console.ReadLine(), out double salario))
+            {
+                throw new FormatException("O salário informado é inválido!");
+            }
+
+            Professor novoProf = new Professor(nome, cpf, dataNasc, salario);
+
+            Console.Write("Digite a turma do professor: ");
+            string turma = Console.ReadLine()!;
+            novoProf.AdicionarTurma(turma);
+
+            ListaProfessor.Add(novoProf);
+            Console.WriteLine("\nProfessor cadastrado com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"\n[ERRO NO CADASTRO]: {ex.Message}");
+        }
     }
 
     static void ListaAlunos()
     {
         Console.Clear();
-
-        Console.WriteLine(@"========== 𝐿𝑖𝑠𝑡𝑎 𝑑𝑒 𝐴𝑙𝑢𝑛𝑜𝑠 ==========");
+        Console.WriteLine("__________ LISTA DE ALUNOS __________\n");
 
         if (ListaDeAlunos.Count == 0)
         {
-            Console.WriteLine("Nenhum Aluno Cadastrado");
-        }else
+            Console.WriteLine("Nenhum Aluno Cadastrado.");
+            return;
+        }
+
+        foreach (var aluno in ListaDeAlunos)
         {
-            foreach (var Aluno in ListaDeAlunos)
-            {
-                Console.WriteLine($"Nome: {Aluno.Nome}, CPF: {Aluno.CPF}, Data De Nascimento: {Aluno.DataDeNascimento}, Notas: {Aluno.Medias}, Matricula: {Aluno.Matricula}");
-                
-            }
+            aluno.ExibirInformacoes();
         }
     }
 
     static void ListaDeProfessor()
     {
         Console.Clear();
+        Console.WriteLine("__________ LISTA DE PROFESSORES __________\n");
 
         if (ListaProfessor.Count == 0)
         {
-            Console.WriteLine("Nenhum Professor Cadastrado");
+            Console.WriteLine("Nenhum Professor Cadastrado.");
+            return;
         }
-        else
+
+        foreach (var prof in ListaProfessor)
         {
-            foreach (var Professor in ListaProfessor)
-            {
-                Console.WriteLine($"Nome: {Professor.Nome}, CPF: {Professor.CPF}, Data de Nascimento: {Professor.DataDeNascimento}, Salario: {Professor.Salario}, Turmas: {Professor.Turmas} ");
-            }
+            prof.ExibirInformacoes();
         }
     }
-
 }
